@@ -410,7 +410,7 @@ def test(HOST, PORT):
 
 if __name__ == "__main__":
     # register broker: happens by default
-    HOST = "127.0.0.1"
+    HOST = "localhost"
     PORT = 8080
     test(HOST, PORT)
     # broker1 down

@@ -171,15 +171,15 @@ def test(HOST, PORT):
         for _ in range(num_of_messages):
             print()
 
-            # url = url = base_url + "/size"
-            # print(f"Size of topic_1 for given consumer")
-            # r = requests.get(url, json=data)
-            # response = r.json()
-            # print("Response")
-            # print(response)
+            url = url = base_url + "/size"
+            print(f"Size of topic_1 for given consumer")
+            r = requests.get(url, json=data)
+            response = r.json()
+            print("Response")
+            print(response)
             
-            # if response['size'] == 0:
-            #     break
+            if response['size'] == 0:
+                break
             
             print()
             print(f"Consuming messages")
@@ -198,6 +198,9 @@ def test(HOST, PORT):
 
     except requests.exceptions.ConnectionError as errc:
         print("Error Connecting:", errc)
+    
+    except Exception as e:
+        print(f"FAILED due to {e}")
     
     print("Testing production to general partition (randomized)")
     
@@ -305,7 +308,7 @@ def test(HOST, PORT):
 
 if __name__ == "__main__":
     # register broker: happens by default
-    HOST = "127.0.0.1"
+    HOST = "localhost"
     PORT = 8080
     test(HOST, PORT)
     # Read Manager down

@@ -1,4 +1,4 @@
-docker compose down
+sudo docker compose down
 sudo rm -rf ../data/
 sudo docker build . -t mbq:latest
 mkdir -p ../data/reverse_proxy
@@ -14,21 +14,20 @@ mkdir -p ../data/main_db_three
 mkdir -p ../data/db_one
 mkdir -p ../data/db_two
 mkdir -p ../data/db_three
-echo "Starting fo run the docker compose command"
-docker compose up -d  main_db_three
+sudo docker compose up -d  main_db_three
 echo "Starting postgres_master node..."
-sleep 20  # Waits for master note start complete
+sleep 10  # Waits for master note start complete
 docker exec -it main_db_three sh /etc/postgresql/init-script/init-db.sh
 echo "Restart master node"
-docker compose restart main_db_three 
+sudo docker compose restart main_db_three 
 sleep 5
 
 echo "Starting read manager  nodes..."
-docker compose up -d  main_db_one
-docker compose up -d  main_db_two
-sleep 20  # Waits for note start complete
+sudo docker compose up -d  main_db_one
+sudo docker compose up -d  main_db_two
+sleep 10  # Waits for note start complete
 
 echo "Done"
 
 
-docker compose up
+sudo docker compose up

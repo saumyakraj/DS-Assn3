@@ -103,7 +103,15 @@ class MyProducer:
             return {"status": "Failed", "message": "Error Connecting"}
 
 
-
-
 if __name__ == "__main__":
-    pass
+    try:
+        topics = ["topic1", "topic2"]
+        url = "http://localhost:8080"
+        my_producer = MyProducer(topics=topics, broker=url)
+        my_producer.add_topic("topic3")
+
+    except Exception as e:
+        print(e)
+
+    finally:
+        print(f"Producer created with topics: {topics}")

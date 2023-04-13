@@ -85,7 +85,6 @@ def test(HOST, PORT):
         r.raise_for_status()
         response = r.json()
         print("Response")
-        print(response)
         consumer_id = response['consumer_id']
         print(response)
     except requests.exceptions.HTTPError as errh:
@@ -294,6 +293,6 @@ def test(HOST, PORT):
     
     
 if __name__ == "__main__":
-    HOST = "127.0.0.1"
+    HOST = "localhost"
     PORT = 8080
     test(HOST, PORT)

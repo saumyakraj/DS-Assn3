@@ -24,7 +24,7 @@ services:
         networks:       
             - custom
         entrypoint: python
-        command: ./ServiceProviders/WMWrapper.py
+        command: -u ./ServiceProviders/WMWrapper.py
         depends_on:
             main_db_three:
                     condition: service_healthy
@@ -41,7 +41,7 @@ services:
         networks:       
             - custom
         entrypoint: python
-        command: ./ServiceProviders/RMWrapper.py
+        command: -u ./ServiceProviders/RMWrapper.py
         hostname: read_manager_one
         depends_on:
             main_db_one:
@@ -60,7 +60,7 @@ services:
         networks:       
             - custom
         entrypoint: python
-        command: ./ServiceProviders/RMWrapper.py
+        command: -u ./ServiceProviders/RMWrapper.py
         hostname: read_manager_two
         depends_on:
             main_db_two:
@@ -72,7 +72,6 @@ services:
     
     broker_one:
         image: mbq:latest
-        container_name: broker_one
         networks:       
             - custom
         restart: always
@@ -82,12 +81,32 @@ services:
                     condition: service_healthy
         environment:
             - DB_NAME=db_one
+            - PORT1=4321
+            - PORT2=4567
         entrypoint: python
-        command: ./Brokers/BrokerWrapper.py
+        command: -u ./Brokers/BrokerWrapper.py
+    
+    db_one:
+        image: postgres:13
+        container_name: db_one
+        restart: always
+        volumes:
+                - ../data/db_one:/var/lib/postgresql/data
+        hostname: db_one
+        environment:
+                - 'POSTGRES_PASSWORD=postgres'
+                - 'POSTGRES_DB=db_one'
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres --dbname db_one'"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+        networks:       
+            - custom
+ 
 
-    broker_two: 
+    broker_two:
         image: mbq:latest
-        container_name: broker_two
         networks:       
             - custom
         restart: always
@@ -97,12 +116,32 @@ services:
                     condition: service_healthy
         environment:
             - DB_NAME=db_two
+            - PORT1=4321
+            - PORT2=4567
         entrypoint: python
-        command: ./Brokers/BrokerWrapper.py
+        command: -u ./Brokers/BrokerWrapper.py
     
-    broker_three: 
+    db_two:
+        image: postgres:13
+        container_name: db_two
+        restart: always
+        volumes:
+                - ../data/db_two:/var/lib/postgresql/data
+        hostname: db_two
+        environment:
+                - 'POSTGRES_PASSWORD=postgres'
+                - 'POSTGRES_DB=db_two'
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres --dbname db_two'"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+        networks:       
+            - custom
+
+
+    broker_three:
         image: mbq:latest
-        container_name: broker_three
         networks:       
             - custom
         restart: always
@@ -112,8 +151,134 @@ services:
                     condition: service_healthy
         environment:
             - DB_NAME=db_three
+            - PORT1=4321
+            - PORT2=4567
         entrypoint: python
-        command: ./Brokers/BrokerWrapper.py
+        command: -u ./Brokers/BrokerWrapper.py
+    
+    db_three:
+        image: postgres:13
+        container_name: db_three
+        restart: always
+        volumes:
+                - ../data/db_three:/var/lib/postgresql/data
+        hostname: db_three
+        environment:
+                - 'POSTGRES_PASSWORD=postgres'
+                - 'POSTGRES_DB=db_three'
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres --dbname db_three'"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+        networks:       
+            - custom
+    
+
+    broker_four:
+        image: mbq:latest
+        networks:       
+            - custom
+        restart: always
+        hostname: broker_four
+        depends_on:
+            db_four:
+                    condition: service_healthy
+        environment:
+            - DB_NAME=db_four
+            - PORT1=4321
+            - PORT2=4567
+        entrypoint: python
+        command: -u ./Brokers/BrokerWrapper.py
+    
+    db_four:
+        image: postgres:13
+        container_name: db_four
+        restart: always
+        volumes:
+                - ../data/db_four:/var/lib/postgresql/data
+        hostname: db_four
+        environment:
+                - 'POSTGRES_PASSWORD=postgres'
+                - 'POSTGRES_DB=db_four'
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres --dbname db_four'"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+        networks:       
+            - custom
+
+    
+    broker_five:
+        image: mbq:latest
+        networks:       
+            - custom
+        restart: always
+        hostname: broker_five
+        depends_on:
+            db_five:
+                    condition: service_healthy
+        environment:
+            - DB_NAME=db_five
+            - PORT1=4321
+            - PORT2=4567
+        entrypoint: python
+        command: -u ./Brokers/BrokerWrapper.py
+    
+    db_five:
+        image: postgres:13
+        container_name: db_five
+        restart: always
+        volumes:
+                - ../data/db_five:/var/lib/postgresql/data
+        hostname: db_five
+        environment:
+                - 'POSTGRES_PASSWORD=postgres'
+                - 'POSTGRES_DB=db_five'
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres --dbname db_five'"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+        networks:       
+            - custom
+
+
+    
+    broker_six:
+        image: mbq:latest
+        networks:       
+            - custom
+        restart: always
+        hostname: broker_six
+        depends_on:
+            db_six:
+                    condition: service_healthy
+        environment:
+            - DB_NAME=db_six
+            - PORT1=4321
+            - PORT2=4567
+        entrypoint: python
+        command: -u ./Brokers/BrokerWrapper.py
+    
+    db_six:
+        image: postgres:13
+        container_name: db_six
+        restart: always
+        volumes:
+                - ../data/db_six:/var/lib/postgresql/data
+        hostname: db_six
+        environment:
+                - 'POSTGRES_PASSWORD=postgres'
+                - 'POSTGRES_DB=db_six'
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres --dbname db_six'"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+        networks:       
+            - custom
 
     main_db_one: 
         image: postgres:13
@@ -193,60 +358,11 @@ services:
         networks:       
             - custom
 
-    db_one:
-        image: postgres:13
-        container_name: db_one
-        restart: always
-        volumes:
-                - ../data/db_one:/var/lib/postgresql/data
-        hostname: db_one
-        environment:
-                - 'POSTGRES_PASSWORD=postgres'
-                - 'POSTGRES_DB=db_one'
-        healthcheck:
-            test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres --dbname db_one'"]
-            interval: 10s
-            timeout: 5s
-            retries: 3
-        networks:       
-            - custom
-        
-    db_two:
-        image: postgres:13
-        container_name: db_two
-        restart: always
-        volumes:
-                - ../data/db_two:/var/lib/postgresql/data
-        hostname: db_two
-        environment:
-                - 'POSTGRES_PASSWORD=postgres'
-                - 'POSTGRES_DB=db_two'
-        healthcheck:
-            test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres --dbname db_two'"]
-            interval: 10s
-            timeout: 5s
-            retries: 3
-        networks:       
-            - custom
-        
-    db_three:
-        image: postgres:13
-        container_name: db_three
-        restart: always
-        volumes:
-                - ../data/db_three:/var/lib/postgresql/data
-        hostname: db_three
-        environment:
-                - 'POSTGRES_PASSWORD=postgres'
-                - 'POSTGRES_DB=db_three'
-        healthcheck:
-            test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres --dbname db_three'"]
-            interval: 10s
-            timeout: 5s
-            retries: 3
-        networks:       
-            - custom
-        
+    
+    
+
+
+
 networks:
     custom:
         driver: bridge

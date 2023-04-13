@@ -2,7 +2,7 @@ from ServiceConsumers import MyConsumer
 from time import sleep
 import random
 
-HOST = "127.0.0.1"
+HOST = "localhost"
 PORT = 8080
 base_url = f"http://{HOST}:{PORT}"
 #  Regitering to partition 0

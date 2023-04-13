@@ -1,5 +1,5 @@
 from ServiceConsumers import MyConsumer
-HOST = "127.0.0.1"
+HOST = "localhost"
 PORT = 8080
 base_url = f"http://{HOST}:{PORT}"
 from time import sleep

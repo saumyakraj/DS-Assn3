@@ -2,7 +2,7 @@ from ServiceConsumers import MyProducer
 import random
 import time
 
-HOST = "127.0.0.1"
+HOST = "localhost"
 PORT = 8080
 base_url = f"http://{HOST}:{PORT}"
 
